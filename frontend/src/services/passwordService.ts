@@ -1,13 +1,13 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const requestPasswordReset = async (email: string): Promise<string> => {
-  const response = await axiosInstance.post("/request-password-reset", { email });
+  const response = await axiosInstance.post("/public/request-password-reset", { email });
   return response.data; 
 };
 
 export const resetPassword = async (token: string, newPassword: string): Promise<string> => {
     try {
-      const response = await axiosInstance.post("/reset-password", { token, newPassword });
+      const response = await axiosInstance.post("/public/reset-password", { token, newPassword });
       return response.data;
     } catch (error: any) {
       if (error.response) {

@@ -21,7 +21,7 @@ type AuthResponse = {
 export const login = async (data: LoginData): Promise<AuthResponse> => {
   try {
 
-    const response = await axios.post<AuthResponse>("/auth/login", data);
+    const response = await axios.post<AuthResponse>("/public/auth/login", data);
     
     return response.data;
   } catch (error: any) {
@@ -31,7 +31,7 @@ export const login = async (data: LoginData): Promise<AuthResponse> => {
 
 export const signup = async (data: SignupData): Promise<AuthResponse> => {
   try {
-    const response = await axios.post<AuthResponse>("/auth/signup", data);
+    const response = await axios.post<AuthResponse>("/public/auth/signup", data);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to sign up");

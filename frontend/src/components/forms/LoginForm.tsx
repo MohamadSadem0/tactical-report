@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login as loginReduxAction } from "@/redux/userSlice";
 import { login as loginService } from "@/services/authService";
+import { getDecryptedData } from "@/utils/encryption";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -32,7 +33,11 @@ const LoginForm = () => {
       setSuccess(response.message);
       setError("");
 
-      router.push("/dashboard");
+      if(getDecryptedData("EncryptedUserRole")==="ADMIN")
+      router.push("/items");
+    else 
+    router.push("/items/user");
+
     } catch (err: any) {
       setSuccess("");
       setError(err.message || "Login failed. Please try again.");

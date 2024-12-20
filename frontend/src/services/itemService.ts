@@ -14,7 +14,7 @@ const getAuthToken = (): string | null => {
 };
 
 export const fetchItemsAPI = async (): Promise<Item[]> => {
-  const response = await axios.get<Item[]>("/items");
+  const response = await axios.get<Item[]>("/public/items");
   console.log(response);
   
   return response.data;
@@ -22,7 +22,7 @@ export const fetchItemsAPI = async (): Promise<Item[]> => {
 
 export const addItemAPI = async (newItem: { name: string; description: string; price: number }): Promise<Item> => {
   const token = getAuthToken();
-  const response = await axios.post<Item>("/items", newItem, {
+  const response = await axios.post<Item>("/admin/items", newItem, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -32,7 +32,7 @@ export const addItemAPI = async (newItem: { name: string; description: string; p
 
 export const updateItemAPI = async (id: number, updatedData: Item): Promise<Item> => {
   const token = getAuthToken();
-  const response = await axios.put<Item>(`/items/${id}`, updatedData, {
+  const response = await axios.put<Item>(`/admin/items/${id}`, updatedData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,7 +42,7 @@ export const updateItemAPI = async (id: number, updatedData: Item): Promise<Item
 
 export const deleteItemAPI = async (id: number): Promise<number> => {
   const token = getAuthToken();
-  await axios.delete(`/items/${id}`, {
+  await axios.delete(`/admin/items/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
