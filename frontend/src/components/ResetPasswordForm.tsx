@@ -1,32 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { resetPassword } from "@/services/passwordService";
+import { validatePassword } from "@/utils/validators";
 
-const ResetPasswordForm = ({ token: propToken }: { token?: string }) => {
-  const [newPassword, setNewPassword] = useState<string>(""); 
-  const [confirmPassword, setConfirmPassword] = useState<string>(""); 
+const ResetPasswordForm = () => {
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<string>(""); 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false); 
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const [error, setError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
 
-  const [token, setToken] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
-    if (propToken) {
-      setToken(propToken);
-    } else {
-      const queryToken = searchParams?.get("token");
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryToken = urlParams.get("token");
       if (queryToken) {
         setToken(queryToken);
       } else {
         setError("Invalid or missing reset token.");
       }
     }
-  }, [propToken, searchParams]);
+  }, []);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,14 +35,16 @@ const ResetPasswordForm = ({ token: propToken }: { token?: string }) => {
       return;
     }
 
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
+    const validationError = validatePassword(newPassword);
+    if (validationError) {
+      setError(validationError);
       setMessage("");
       return;
     }
 
-    if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters long.");
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      setMessage("");
       return;
     }
 
@@ -54,9 +55,12 @@ const ResetPasswordForm = ({ token: propToken }: { token?: string }) => {
       setError("");
 
       setTimeout(() => router.push("/login"), 3000);
-    } catch (err: any) {
+    } catch (err) {
+      const errorMessage =
+        (err as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        "An unexpected error occurred.";
+      setError(errorMessage);
       setMessage("");
-      setError(err.response?.data?.message || "Failed to reset password. Try again.");
     } finally {
       setIsSubmitting(false);
     }

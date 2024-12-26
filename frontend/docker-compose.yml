@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5500:5500" # Host port 5500 -> Container port 5500
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE_URL: http://backend:8080/api
+      ENCRYPTION_KEY: super-secret-key
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     external: true

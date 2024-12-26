@@ -1,9 +1,8 @@
-import axios from "@/utils/axiosInstance";
+import axiosInstance from "@/utils/axiosInstance";
 import { getDecryptedData } from "@/utils/encryption";
-import { log } from "node:console";
 
 export type Item = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -13,16 +12,20 @@ const getAuthToken = (): string | null => {
   return getDecryptedData("UserToken");
 };
 
-export const fetchItemsAPI = async (): Promise<Item[]> => {
-  const response = await axios.get<Item[]>("/public/items");
-  console.log(response);
-  
-  return response.data;
+export const fetchItemsAPI = async (): Promise<{ items: Item[] }> => {
+  try {
+    const response = await axiosInstance.get<{ items: Item[] }>("/public/items");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    throw new Error("Failed to fetch items.");
+  }
 };
 
 export const addItemAPI = async (newItem: { name: string; description: string; price: number }): Promise<Item> => {
   const token = getAuthToken();
-  const response = await axios.post<Item>("/admin/items", newItem, {
+  
+  const response = await axiosInstance.post<Item>("/admin/items/create", newItem, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -30,9 +33,9 @@ export const addItemAPI = async (newItem: { name: string; description: string; p
   return response.data;
 };
 
-export const updateItemAPI = async (id: number, updatedData: Item): Promise<Item> => {
+export const updateItemAPI = async (id: number, updatedData: Partial<Item>): Promise<Item> => {
   const token = getAuthToken();
-  const response = await axios.put<Item>(`/admin/items/${id}`, updatedData, {
+  const response = await axiosInstance.put<Item>(`/admin/items/${id}`, updatedData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,7 +45,7 @@ export const updateItemAPI = async (id: number, updatedData: Item): Promise<Item
 
 export const deleteItemAPI = async (id: number): Promise<number> => {
   const token = getAuthToken();
-  await axios.delete(`/admin/items/${id}`, {
+  await axiosInstance.delete(`/admin/items/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

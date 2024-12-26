@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { saveEncryptedData, getDecryptedData } from "@/utils/encryption";
+import { saveEncryptedData } from "@/utils/encryption";
 
 type UserState = {
   role: string | null;

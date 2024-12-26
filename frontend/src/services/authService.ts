@@ -1,4 +1,5 @@
-import axios from "@/utils/axiosInstance";
+import axiosInstance from "@/utils/axiosInstance";
+import axios from "axios";
 
 type LoginData = {
   email: string;
@@ -12,28 +13,48 @@ type SignupData = {
 };
 
 type AuthResponse = {
-  role: string;   
-  message: string;    
-  token: string;   
-  username:string;  
+  role: string;
+  message: string;
+  token: string;
+  username: string;
+};
+
+type ActivationResponse = {
+  message: string;
 };
 
 export const login = async (data: LoginData): Promise<AuthResponse> => {
   try {
-
-    const response = await axios.post<AuthResponse>("/public/auth/login", data);
-    
+    const response = await axiosInstance.post<AuthResponse>("/public/auth/login", data);
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to log in");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Failed to log in");
+    }
+    throw new Error("An unexpected error occurred during login.");
   }
 };
 
 export const signup = async (data: SignupData): Promise<AuthResponse> => {
   try {
-    const response = await axios.post<AuthResponse>("/public/auth/signup", data);
+    const response = await axiosInstance.post<AuthResponse>("/public/auth/signup", data);
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to sign up");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Failed to sign up");
+    }
+    throw new Error("An unexpected error occurred during signup.");
+  }
+};
+
+export const activateAccount = async (token: string): Promise<ActivationResponse> => {
+  try {
+    const response = await axiosInstance.get<ActivationResponse>(`/public/auth/activate?token=${token}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Failed to activate account");
+    }
+    throw new Error("An unexpected error occurred during account activation.");
   }
 };

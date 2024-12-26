@@ -4,14 +4,15 @@ import { useState } from "react";
 import ItemModal from "./modals/ItemModal";
 import "@/app/globals.css";
 
+type Item = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+};
 
 type ItemCardProps = {
-  item: {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-  };
+  item: Item;
   role: "ADMIN" | "USER"; 
   onDelete?: (id: number) => void;
 };
@@ -44,23 +45,20 @@ const ItemCard = ({ item, role, onDelete }: ItemCardProps) => {
         </button>
 
         {role === "ADMIN" && (
-          <>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 flex-1"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-          </>
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 flex-1"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
         )}
       </div>
 
-     
       {isModalOpen && (
         <ItemModal
           item={item}
           onClose={() => setIsModalOpen(false)}
-          onItemUpdated={() => {}} 
+          onItemUpdated={() => {}}
         />
       )}
     </div>

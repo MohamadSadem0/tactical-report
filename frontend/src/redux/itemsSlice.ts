@@ -6,7 +6,6 @@ import {
   deleteItemAPI,
   Item,
 } from "@/services/itemService";
-import { log } from "console";
 
 type ItemsState = {
   items: Item[];
@@ -21,11 +20,8 @@ const initialState: ItemsState = {
 };
 
 export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
- const response= await fetchItemsAPI();
- console.log(response);
- 
+  const response = await fetchItemsAPI();
   return response.items;
-
 });
 
 export const addItem = createAsyncThunk(
@@ -37,7 +33,7 @@ export const addItem = createAsyncThunk(
 
 export const updateItem = createAsyncThunk(
   "items/updateItem",
-  async ({ id, updatedData }: { id: number; updatedData: Item }) => {
+  async ({ id, updatedData }: { id: number; updatedData: Partial<Item> }) => {
     return await updateItemAPI(id, updatedData);
   }
 );

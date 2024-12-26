@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signup } from "@/services/authService";
 import { validatePassword } from "@/utils/validators";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const SignupForm = () => {
   const [email, setEmail] = useState<string>(""); 
@@ -16,30 +17,37 @@ const SignupForm = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const passwordValidationError = validatePassword(password);
     if (passwordValidationError) {
       setError(passwordValidationError);
       setSuccess("");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       setSuccess("");
       return;
     }
-
+  
     try {
       const response = await signup({ email, username, password });
       setSuccess(`Welcome, ${response.username}! ${response.message}`);
       setError("");
       setTimeout(() => router.push("/login"), 3000); 
-    } catch (err: any) {
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Signup failed. Please try again.");
+      } else if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred.");
+      } else {
+        setError("An unknown error occurred.");
+      }
       setSuccess("");
-      setError(err.message || "Signup failed. Please try again.");
     }
   };
+  
 
   const redirectToLogin = () => {
     router.push("/login");

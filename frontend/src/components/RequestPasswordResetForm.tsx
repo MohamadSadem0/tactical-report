@@ -5,7 +5,7 @@ import { requestPasswordReset } from "@/services/passwordService";
 
 const RequestPasswordResetForm = () => {
   const [email, setEmail] = useState<string>(""); 
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>(""); 
   const [error, setError] = useState<string>(""); 
 
   const handleRequestReset = async (e: React.FormEvent) => {
@@ -15,10 +15,15 @@ const RequestPasswordResetForm = () => {
       const responseMessage = await requestPasswordReset(email);
       setMessage(responseMessage);
       setError("");
-    } catch (err: any) {
+  } catch (err: unknown) {
+      if (err instanceof Error) {
+          setError(err.message || "Failed to send reset link. Please try again.");
+      } else {
+          setError("An unexpected error occurred.");
+      }
       setMessage("");
-      setError(err.response?.data?.message || "Failed to send reset link. Please try again.");
-    }
+  }
+  
   };
 
   return (

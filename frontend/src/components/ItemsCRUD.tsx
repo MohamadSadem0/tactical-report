@@ -22,7 +22,7 @@ const ItemsCRUD = () => {
     }
   };
 
-  const handleUpdateItem = (id: number, updatedData: { name: string; description: string; price: number }) => {
+  const handleUpdateItem = (id: number, updatedData: { id:number ;name: string; description: string; price: number }) => {
     dispatch(updateItem({ id, updatedData }));
   };
 
@@ -73,7 +73,7 @@ const ItemsCRUD = () => {
               <p>{item.description}</p>
               <p>Price: ${item.price.toFixed(2)}</p>
               <button
-                onClick={() => handleUpdateItem(item.id!, { name: "Updated Name", description: "Updated Description", price: 50.0 })}
+                onClick={() => handleUpdateItem(item.id!, {id:345, name: "Updated Name", description: "Updated Description", price: 50.0 })}
                 className="mr-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
               >
                 Update

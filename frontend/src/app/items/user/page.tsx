@@ -6,7 +6,7 @@ import { fetchItems } from "@/redux/itemsSlice";
 import { useEffect } from "react";
 import ItemCard from "@/components/ItemCard";
 import "@/app/globals.css";
-
+import { getDecryptedData } from "@/utils/encryption";
 
 const UserItemsPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -14,6 +14,7 @@ const UserItemsPage = () => {
 
   useEffect(() => {
     dispatch(fetchItems());
+    console.log(getDecryptedData("UserRole"));
   }, [dispatch]);
 
   if (loading) {
@@ -32,11 +33,13 @@ const UserItemsPage = () => {
     );
   }
 
+  const validItems = items.filter((item) => item.id !== undefined);
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-2xl font-bold text-center mb-6 text-blue-500">All Items</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((item) => (
+        {validItems.map((item) => (
           <ItemCard key={item.id} item={item} role="USER" />
         ))}
       </div>

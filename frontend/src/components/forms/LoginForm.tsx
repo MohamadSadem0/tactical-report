@@ -8,7 +8,7 @@ import { login as loginService } from "@/services/authService";
 import { getDecryptedData } from "@/utils/encryption";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(""); 
   const [password, setPassword] = useState<string>(""); 
   const [error, setError] = useState<string>(""); 
   const [success, setSuccess] = useState<string>(""); 
@@ -33,14 +33,19 @@ const LoginForm = () => {
       setSuccess(response.message);
       setError("");
 
-      if(getDecryptedData("EncryptedUserRole")==="ADMIN")
-      router.push("/items");
-    else 
-    router.push("/items/user");
-
-    } catch (err: any) {
+      const userRole = getDecryptedData("UserRole");
+      if (userRole === "ADMIN") {
+        router.push("/items");
+      } else {
+        router.push("/items/user");
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "Login failed. Please try again.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
       setSuccess("");
-      setError(err.message || "Login failed. Please try again.");
     }
   };
 
@@ -60,7 +65,9 @@ const LoginForm = () => {
         {success && <p className="text-green-500 text-center mb-4">{success}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
+            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              Email
+            </label>
             <input
               id="email"
               type="email"
@@ -72,7 +79,9 @@ const LoginForm = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
+            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -83,14 +92,17 @@ const LoginForm = () => {
               className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          >
             Login
           </button>
         </form>
 
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+          Don&apos;t have an account?
             <button onClick={redirectToSignup} className="text-blue-500 hover:underline">
               Signup
             </button>
