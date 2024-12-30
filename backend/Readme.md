@@ -39,6 +39,10 @@ This repository contains the Tactical Report project, a Spring Boot application 
 - **Gradle**
 - **Docker and Docker Compose**
 - **Gmail Account** for email integration
+- 
+### Admin account
+- **email :admin@example.com**
+- **password :admin123**
 
 ### Setup Instructions
 1. Clone the repository:
