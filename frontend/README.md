@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend Application for Tactical Report
 
-## Getting Started
+This is the frontend application for Tactical Report, built with **Next.js**, **Redux**, and **TypeScript**. The application is designed to work with a backend API and includes features like authentication, item management, password reset, and more.
 
-First, run the development server:
+---
 
+## **Features**
+- **User Authentication**:
+  - Login, signup, and logout functionality.
+- **Item Management**:
+  - Admins can create, update, delete, and view items.
+  - Regular users can view item details.
+- **Password Management**:
+  - Users can request a password reset link and reset their password securely.
+- **Responsive Design**:
+  - Optimized for desktop and mobile devices.
+- **Secure Data Handling**:
+  - Sensitive data like tokens are encrypted using a configurable `ENCRYPTION_KEY`.
+- **Dynamic Navigation**:
+  - Includes a global Navbar for easy navigation across routes.
+
+---
+
+## **Getting Started**
+
+Follow these steps to clone, set up, and run the application.
+
+### **1. Prerequisites**
+Ensure you have the following installed:
+- **Node.js** (v18 or higher)
+- **Docker** (optional for containerized deployment)
+
+---
+
+### **2. Clone the Repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone <your-repo-url>
+cd frontend
