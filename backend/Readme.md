@@ -127,6 +127,7 @@ src
 │   │       ├── config         # Security, email, and application configurations
 │   │       ├── controller     # REST controllers
 │   │       ├── dto            # Data transfer objects
+│   │       ├── mappers        # map between dto and models
 │   │       ├── enums          # User roles and constants
 │   │       ├── exception      # Custom exception handling
 │   │       ├── model          # Entity models
