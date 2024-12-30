@@ -34,5 +34,67 @@ Ensure you have the following installed:
 
 ### **2. Clone the Repository**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/MohamadSadem0/tactical-report.git
 cd frontend
+```
+
+### **3. Configure Environment Variables**
+The application requires environment variables to be set up for both local development and production builds. Create the following files in the root of the frontend directory:
+
+#### `.env.local`
+This file is used for local development:
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
+ENCRYPTION_KEY=super-secret-key
+```
+
+#### `.env.production`
+This file is used for production builds:
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
+ENCRYPTION_KEY=super-secret-key
+```
+
+### **4. Run the Application**
+
+#### Using Docker
+- Build the Docker image:
+```bash
+docker-compose build
+```
+- Run the Docker container:
+```bash
+docker-compose up
+```
+The application will be accessible at [http://localhost:5500](http://localhost:5500).
+
+#### Without Docker (Local Development)
+- Install dependencies:
+```bash
+npm install
+```
+- Run the development server:
+```bash
+npm run dev
+```
+The application will be accessible at [http://localhost:3000](http://localhost:3000).
+
+- To create a production build and serve it:
+```bash
+npm run build
+npm start
+```
+
+---
+
+## **Folder Structure**
+Key Directories:
+- **/app**: Pages and routes for the application.
+  - Examples: `/login`, `/signup`, `/profile`, `/items`.
+- **/components**: Reusable UI components.
+  - Examples: `Navbar.tsx`, `ItemCard.tsx`, `Forms`.
+- **/redux**: Redux slices and store configuration.
+  - Examples: `itemsSlice.ts`, `userSlice.ts`.
+- **/services**: API service files for handling HTTP requests.
+  - Examples: `authService.ts`, `itemService.ts`, `passwordService.ts`.
+- **/utils**: Utility functions for encryption, validation, and Axios configuration.
